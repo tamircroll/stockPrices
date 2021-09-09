@@ -1,4 +1,7 @@
-import SourceHandler.*;
+import SourceHandler.CsvFileHandler;
+import SourceHandler.JsonFileHandler;
+import SourceHandler.SourcesReader;
+import SourceHandler.StocksFileHandler;
 import StocksHanlder.StocksPricesHandler;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,13 +15,13 @@ public class Main
         
         CsvFileHandler csv = new CsvFileHandler();
         JsonFileHandler json = new JsonFileHandler();
-    
+        
         List<StocksFileHandler> stocksFileHandlers = createHandlersList(csv, json);
         SourcesReader sourcesReader = new SourcesReader(TimeUnit.SECONDS, 20, stockPriceHandler, stocksFileHandlers);
-    
+        
         List<Double> allLowestPrices = stockPriceHandler.getAllLowestPrices();
         double appl = stockPriceHandler.getLowestPrice("APPL");
-    
+        
         System.out.println("Main thread done");
     }
     

@@ -28,6 +28,7 @@ public class SourcesReader
         this.stocksFileHandlers = stocksFileHandlers;
         scheduler.scheduleAtFixedRate(this::read, 0, readSourceDelay, readSourceTimeUnit);
     }
+    
     private void read()
     {
         List<String> sources = getSources();

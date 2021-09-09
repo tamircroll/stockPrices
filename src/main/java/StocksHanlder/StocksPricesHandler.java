@@ -5,10 +5,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class StocksPricesHandler
+public class StocksPricesHandler extends IStocksPricesHandler
 {
     private ConcurrentHashMap<String, StockData> stocks = new ConcurrentHashMap();
     
+    @Override
     public void addPrice(String stockName, double stockPrice)
     {
         stocks.putIfAbsent(stockName, new StockData(stockName));
@@ -16,6 +17,7 @@ public class StocksPricesHandler
         stock.addPrice(stockPrice);
     }
     
+    @Override
     public double getLowestPrice(String stockName)
     {
         StockData stock = stocks.get(stockName);
