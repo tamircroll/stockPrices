@@ -16,10 +16,10 @@ public class Main
         List<StocksFileHandler> stocksFileHandlers = createHandlersList(csv, json);
         SourcesReader sourcesReader = new SourcesReader(TimeUnit.SECONDS, 20, stockPriceHandler, stocksFileHandlers);
     
-        sourcesReader.getAllLowestPrices();
-        sourcesReader.getLowestPrice("APPL");
+        List<Double> allLowestPrices = stockPriceHandler.getAllLowestPrices();
+        double appl = stockPriceHandler.getLowestPrice("APPL");
     
-        System.out.println("Tamir");
+        System.out.println("Main thread done");
     }
     
     private static List<StocksFileHandler> createHandlersList(CsvFileHandler csv, JsonFileHandler json)

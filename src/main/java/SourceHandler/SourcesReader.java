@@ -20,7 +20,7 @@ public class SourcesReader
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     private final List<StocksFileHandler> stocksFileHandlers;
     ExecutorService fileHandlerExecutor = Executors.newFixedThreadPool(4);
-    ExecutorService downloadFilesExecutor = Executors.newFixedThreadPool(100);
+    ExecutorService webFilesExecutor = Executors.newFixedThreadPool(100);
     
     public SourcesReader(TimeUnit readSourceTimeUnit, int readSourceDelay, StocksPricesHandler stocksFileHandler, List<StocksFileHandler> stocksFileHandlers)
     {
@@ -28,37 +28,19 @@ public class SourcesReader
         this.stocksFileHandlers = stocksFileHandlers;
         scheduler.scheduleAtFixedRate(this::read, 0, readSourceDelay, readSourceTimeUnit);
     }
-    
-    public double getLowestPrice(String stockName)
-    {
-        return stocksFileHandler.getLowestPrice(stockName);
-    }
-    
-    public List<Double> getAllLowestPrices()
-    {
-        return stocksFileHandler.getAllLowestPrices();
-    }
-    
-    // ---------- Privates ---------------
-    
     private void read()
     {
         List<String> sources = getSources();
-        for(String source : sources)
+        List<String> webSources = sources.stream().filter(source -> source.startsWith("http")).toList();
+        List<String> localSources = sources.stream().filter(source -> source.startsWith("http")).toList();
+        
+        for(String source : webSources)
         {
-            fileHandlerExecutor.execute(() -> handleSource(source));
+            webFilesExecutor.execute(() -> handleWebFile(source));
         }
-    }
-    
-    private void handleSource(String source)
-    {
-        if(source.startsWith("http"))
+        for(String source : localSources)
         {
-            downloadFilesExecutor.execute(() -> handleWebFile(source));
-        }
-        else
-        {
-            handleLocalFile(source);
+            fileHandlerExecutor.execute(() -> handleLocalFile(source));
         }
     }
     
