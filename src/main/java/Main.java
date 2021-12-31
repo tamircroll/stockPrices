@@ -7,10 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class Main
-{
-    public static void main(String[] args)
-    {
+public class Main {
+    public static void main(String[] args) {
         StocksPricesHandler stockPriceHandler = new StocksPricesHandler();
         
         CsvFileHandler csv = new CsvFileHandler();
@@ -25,8 +23,7 @@ public class Main
         System.out.println("Main thread done");
     }
     
-    private static List<StocksFileHandler> createHandlersList(CsvFileHandler csv, JsonFileHandler json)
-    {
+    private static List<StocksFileHandler> createHandlersList(CsvFileHandler csv, JsonFileHandler json) {
         List<StocksFileHandler> stocksFileHandlers = new ArrayList();
         stocksFileHandlers.add(csv);
         stocksFileHandlers.add(json);
